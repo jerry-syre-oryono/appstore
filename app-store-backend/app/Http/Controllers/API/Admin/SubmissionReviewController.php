@@ -7,20 +7,39 @@ use App\Models\AppVersion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\Controller;
+use OpenApi\Attributes as OA;
 
 class SubmissionReviewController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('admin');
-    }
-
+    #[OA\Get(
+        path: "/api/admin/submissions",
+        summary: "List all pending submissions (Admin)",
+        security: [["bearerAuth" => []]],
+        tags: ["Admin Submissions"],
+        responses: [
+            new OA\Response(response: 200, description: "Success")
+        ]
+    )]
     public function index()
     {
         $submissions = Submission::with('user')->where('status', 'pending')->get();
         return response()->json($submissions);
     }
 
+    #[OA\Patch(
+        path: "/api/admin/submissions/{id}",
+        summary: "Review a submission (Admin)",
+        security: [["bearerAuth" => []]],
+        tags: ["Admin Submissions"],
+        parameters: [new OA\Parameter(name: "id", in: "path", required: true, schema: new OA\Schema(type: "integer"))],
+        requestBody: new OA\RequestBody(content: new OA\JsonContent(properties: [
+            new OA\Property(property: "status", type: "string", enum: ["approved", "rejected"]),
+            new OA\Property(property: "reviewer_notes", type: "string")
+        ])),
+        responses: [
+            new OA\Response(response: 200, description: "Review successful")
+        ]
+    )]
     public function review(Request $request, $id)
     {
         $request->validate([

@@ -7,14 +7,19 @@ use App\Models\Submission;
 use App\Models\UserInstalledApp;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use OpenApi\Attributes as OA;
 
 class StatsController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('admin');
-    }
-
+    #[OA\Get(
+        path: "/api/admin/stats",
+        summary: "Get backend stats (Admin)",
+        security: [["bearerAuth" => []]],
+        tags: ["Admin Stats"],
+        responses: [
+            new OA\Response(response: 200, description: "Stats object")
+        ]
+    )]
     public function index()
     {
         $totalApps = App::count();

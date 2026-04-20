@@ -8,6 +8,12 @@ use App\Http\Controllers\Controller;
 use OpenApi\Attributes as OA;
 
 #[OA\Info(title: "App Store API", version: "1.0.0", description: "API documentation for the App Store backend")]
+#[OA\SecurityScheme(
+    securityScheme: "bearerAuth",
+    type: "http",
+    scheme: "bearer",
+    bearerFormat: "JWT"
+)]
 class AuthController extends Controller
 {
     #[OA\Post(
@@ -39,6 +45,16 @@ class AuthController extends Controller
         path: "/api/login",
         summary: "Login user",
         tags: ["Auth"],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ["email", "password"],
+                properties: [
+                    new OA\Property(property: "email", type: "string", example: "admin@example.com"),
+                    new OA\Property(property: "password", type: "string", example: "Admin@123")
+                ]
+            )
+        ),
         responses: [
             new OA\Response(response: 200, description: "Success"),
             new OA\Response(response: 401, description: "Unauthorized")
@@ -55,6 +71,15 @@ class AuthController extends Controller
         return response()->json(['user' => $user, 'token' => $token]);
     }
 
+    #[OA\Post(
+        path: "/api/logout",
+        summary: "Logout user",
+        security: [["bearerAuth" => []]],
+        tags: ["Auth"],
+        responses: [
+            new OA\Response(response: 200, description: "Logged out")
+        ]
+    )]
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();

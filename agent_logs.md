@@ -406,3 +406,103 @@ Configured and generated Swagger API documentation.
 
 **Result:**
 - Success
+
+## [2026-04-20 21:09:53]
+
+**Type:** docs
+
+**Files Affected:**
+- All API Controllers
+
+**Description:**
+Comprehensive API documentation using OpenApi Attributes.
+
+**Changes Made:**
+- Documented all endpoints across Auth, Apps, Submissions, Notifications, and Admin management.
+- Configured Sanctum Bearer Token security scheme.
+- Added detailed request/response schemas for testing within Swagger UI.
+
+**Errors Encountered (if any):**
+- None
+
+**Fix Applied (if any):**
+- N/A
+
+**Result:**
+- Success
+
+## [2026-04-20 21:12:58]
+
+**Type:** docs
+
+**Files Affected:**
+- app-store-backend/app/Http/Controllers/API/AuthController.php
+
+**Description:**
+Enhanced Swagger Login experience with pre-filled admin credentials.
+
+**Changes Made:**
+- Added OA\RequestBody with example email (dmin@example.com) and password (Admin@123) to the login endpoint.
+- Regenerated Swagger documentation.
+
+**Errors Encountered (if any):**
+- None
+
+**Fix Applied (if any):**
+- N/A
+
+**Result:**
+- Success
+
+## [2026-04-20 21:21:35]
+
+**Type:** test
+
+**Files Affected:**
+- app-store-backend/tests/Feature/ApiTest.php
+- app-store-backend/app/Models/User.php
+- app-store-backend/database/factories/UserFactory.php
+- app-store-backend/app/Http/Controllers/API/Admin/*
+
+**Description:**
+Implemented and successfully ran an automated test suite for all core API endpoints.
+
+**Changes Made:**
+- Created ApiTest.php with 6 feature tests.
+- Fixed User model by adding HasFactory.
+- Updated UserFactory to match the custom migration schema.
+- Cleaned up Admin controllers to use route-level middleware instead of constructor-based.
+
+**Errors Encountered (if any):**
+- Missing HasFactory trait.
+- Schema mismatch in UserFactory.
+- BadMethodCallException for middleware() in controllers.
+
+**Fix Applied (if any):**
+- Added traits, fixed factory, and refactored middleware registration.
+
+**Result:**
+- Success (All 6 tests passed)
+
+## [2026-04-20 21:23:40]
+
+**Type:** docs
+
+**Files Affected:**
+- flutter_integration.md
+
+**Description:**
+Created a comprehensive integration guide for connecting a Flutter mobile app to the backend.
+
+**Changes Made:**
+- Documented API endpoints, authentication flows, and recommended Flutter packages.
+- Added specific deployment and configuration tips for Render.com.
+
+**Errors Encountered (if any):**
+- None
+
+**Fix Applied (if any):**
+- N/A
+
+**Result:**
+- Success

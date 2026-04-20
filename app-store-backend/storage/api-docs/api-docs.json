@@ -6,6 +6,319 @@
         "version": "1.0.0"
     },
     "paths": {
+        "/api/admin/apps": {
+            "post": {
+                "tags": [
+                    "Admin App Management"
+                ],
+                "summary": "Create a new app (Admin)",
+                "operationId": "6ff4bed7c46608fa0d97de47ca55b034",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "package_name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "icon_url": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "App created"
+                    },
+                    "403": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/apps/{appId}/versions": {
+            "post": {
+                "tags": [
+                    "Admin App Management"
+                ],
+                "summary": "Upload new app version (Admin)",
+                "operationId": "b1c9177f037689e22b498568b23a5c33",
+                "parameters": [
+                    {
+                        "name": "appId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "apk": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "version_code": {
+                                        "type": "integer"
+                                    },
+                                    "version_name": {
+                                        "type": "string"
+                                    },
+                                    "changelog": {
+                                        "type": "string"
+                                    },
+                                    "is_force": {
+                                        "type": "boolean"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Version uploaded"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/stats": {
+            "get": {
+                "tags": [
+                    "Admin Stats"
+                ],
+                "summary": "Get backend stats (Admin)",
+                "operationId": "2439b23ba61e64d24aef3185dd795baa",
+                "responses": {
+                    "200": {
+                        "description": "Stats object"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/submissions": {
+            "get": {
+                "tags": [
+                    "Admin Submissions"
+                ],
+                "summary": "List all pending submissions (Admin)",
+                "operationId": "7134505b70cc9ef2cb7b32afc760e90b",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/submissions/{id}": {
+            "patch": {
+                "tags": [
+                    "Admin Submissions"
+                ],
+                "summary": "Review a submission (Admin)",
+                "operationId": "dc95413f9c68dad9b954c7e68c558cf8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "approved",
+                                            "rejected"
+                                        ]
+                                    },
+                                    "reviewer_notes": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Review successful"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/apps": {
+            "get": {
+                "tags": [
+                    "Apps"
+                ],
+                "summary": "List all active apps",
+                "operationId": "76c50a5498e091fd53e6d6d4e39236c8",
+                "responses": {
+                    "200": {
+                        "description": "App list"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/apps/{id}": {
+            "get": {
+                "tags": [
+                    "Apps"
+                ],
+                "summary": "Get app details with all versions",
+                "operationId": "9f654d51d6c5116b1457dce86ff5f863",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "App details"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/apps/check-update": {
+            "get": {
+                "tags": [
+                    "Apps"
+                ],
+                "summary": "Check for app updates",
+                "operationId": "7471a6c2ee4640605d70b9f4d8636e4f",
+                "parameters": [
+                    {
+                        "name": "package",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "version_code",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Update status"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/user/installed": {
+            "post": {
+                "tags": [
+                    "Apps"
+                ],
+                "summary": "Report an installed app version",
+                "operationId": "b129f3c66562c5227eb88419fff982b8",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "app_id": {
+                                        "type": "integer"
+                                    },
+                                    "version_code": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Reported successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/register": {
             "post": {
                 "tags": [
@@ -30,6 +343,30 @@
                 ],
                 "summary": "Login user",
                 "operationId": "44212a9096e4b09358281e9ec8a0701d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "admin@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "Admin@123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
                         "description": "Success"
@@ -39,12 +376,196 @@
                     }
                 }
             }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logout user",
+                "operationId": "79854151e609bd20032aa5aa4d5a35c0",
+                "responses": {
+                    "200": {
+                        "description": "Logged out"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/push-token": {
+            "post": {
+                "tags": [
+                    "Notifications"
+                ],
+                "summary": "Register FCM token",
+                "operationId": "333d18f17ea12e39d766cac3c2fab858",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "token": {
+                                        "type": "string"
+                                    },
+                                    "device_name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/submissions/upload-apk": {
+            "post": {
+                "tags": [
+                    "Submissions"
+                ],
+                "summary": "Upload APK to temporary storage",
+                "operationId": "97df21c6610d8f0afa5c4bcc701c16b5",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "apk": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Upload success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/submissions": {
+            "get": {
+                "tags": [
+                    "Submissions"
+                ],
+                "summary": "List current user's submissions",
+                "operationId": "56c54b0cd30585228039c77d5164aa1b",
+                "responses": {
+                    "200": {
+                        "description": "Submission list"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Submissions"
+                ],
+                "summary": "Create a new app submission",
+                "operationId": "0c5f0006acb849ce8cd7bba6a2efa591",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "app_name": {
+                                        "type": "string"
+                                    },
+                                    "package_name": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "apk_url": {
+                                        "type": "string"
+                                    },
+                                    "temp_path": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Submission created"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
         }
     },
     "tags": [
         {
+            "name": "Admin App Management",
+            "description": "Admin App Management"
+        },
+        {
+            "name": "Admin Stats",
+            "description": "Admin Stats"
+        },
+        {
+            "name": "Admin Submissions",
+            "description": "Admin Submissions"
+        },
+        {
+            "name": "Apps",
+            "description": "Apps"
+        },
+        {
             "name": "Auth",
             "description": "Auth"
+        },
+        {
+            "name": "Notifications",
+            "description": "Notifications"
+        },
+        {
+            "name": "Submissions",
+            "description": "Submissions"
         }
     ]
 }
